@@ -190,7 +190,7 @@ branch refs/heads/mybranch-worktree
 			}
 
 			getRevParseArgs := func() []string {
-				return []string{"rev-parse", "--path-format=absolute"}
+				return []string{"rev-parse"}
 			}
 
 			s.before(runner, fs, getRevParseArgs)

@@ -148,15 +148,13 @@ func minGitVersionErrorMessage(tr *i18n.TranslationSet) string {
 
 func (app *App) validateGitVersion() (*git_commands.GitVersion, error) {
 	version, err := git_commands.GetGitVersion(app.OSCommand)
-	// if we get an error anywhere here we'll show the same status
-	minVersionError := errors.New(minGitVersionErrorMessage(app.Tr))
 	if err != nil {
-		return nil, minVersionError
+		return nil, errors.New(minGitVersionErrorMessage(app.Tr))
 	}
 
 	minRequiredVersion, _ := git_commands.ParseGitVersion(minGitVersionStr)
 	if version.IsOlderThanVersion(minRequiredVersion) {
-		return nil, minVersionError
+		app.Log.Warningf("Git version %d.%d.%d is older than the recommended minimum %s. Some features may not work correctly.", version.Major, version.Minor, version.Patch, minGitVersionStr)
 	}
 
 	return version, nil

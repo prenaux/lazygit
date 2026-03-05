@@ -93,6 +93,15 @@ func GetRepoPathsForDir(
 	worktreePath := gitDirResults[0]
 	worktreeGitDirPath := gitDirResults[1]
 	repoGitDirPath := gitDirResults[2]
+	// --git-common-dir can return a relative path on git < 2.31 (which
+	// lacks --path-format=absolute). Resolve it so the rest of the code
+	// can rely on absolute paths.
+	if !filepath.IsAbs(repoGitDirPath) {
+		repoGitDirPath, err = filepath.Abs(repoGitDirPath)
+		if err != nil {
+			return nil, err
+		}
+	}
 	isBareRepo := gitDirResults[3] == "true"
 
 	// If we're in a submodule, --show-superproject-working-tree will return
@@ -125,7 +134,7 @@ func callGitRevParseWithDir(
 	dir string,
 	gitRevArgs ...string,
 ) (string, error) {
-	gitRevParse := NewGitCmd("rev-parse").Arg("--path-format=absolute").Arg(gitRevArgs...)
+	gitRevParse := NewGitCmd("rev-parse").Arg(gitRevArgs...)
 	if dir != "" {
 		gitRevParse.Dir(dir)
 	}

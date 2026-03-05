@@ -195,7 +195,7 @@ func TestGetRepoPaths(t *testing.T) {
 			cmd := oscommands.NewDummyCmdObjBuilder(runner)
 
 			getRevParseArgs := func() []string {
-				return []string{"rev-parse", "--path-format=absolute"}
+				return []string{"rev-parse"}
 			}
 			// prepare the filesystem for the scenario
 			s.BeforeFunc(runner, getRevParseArgs)
