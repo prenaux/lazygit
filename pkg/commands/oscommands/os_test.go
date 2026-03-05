@@ -67,11 +67,13 @@ func TestOSCommandQuoteDoubleQuote(t *testing.T) {
 	assert.EqualValues(t, expected, actual)
 }
 
-// TestOSCommandQuoteWindows tests the quote function for Windows
-func TestOSCommandQuoteWindows(t *testing.T) {
+// TestOSCommandQuoteWindowsCmd tests the quote function for Windows with cmd shell
+func TestOSCommandQuoteWindowsCmd(t *testing.T) {
 	osCommand := NewDummyOSCommand()
 
 	osCommand.Platform.OS = "windows"
+	osCommand.Platform.Shell = "cmd"
+	osCommand.Cmd.platform = osCommand.Platform
 
 	actual := osCommand.Quote(`hello "test" 'test2'`)
 
@@ -79,6 +81,7 @@ func TestOSCommandQuoteWindows(t *testing.T) {
 
 	assert.EqualValues(t, expected, actual)
 }
+
 
 func TestOSCommandFileType(t *testing.T) {
 	type scenario struct {

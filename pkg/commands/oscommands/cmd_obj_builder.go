@@ -54,9 +54,13 @@ func (self *CmdObjBuilder) NewShell(commandStr string, shellFunctionsFile string
 	return self.New(cmdArgs)
 }
 
+func (self *CmdObjBuilder) isCmdShell() bool {
+	return self.platform.Shell == "cmd" || self.platform.Shell == "cmd.exe"
+}
+
 func (self *CmdObjBuilder) quotedCommandString(commandStr string) string {
-	// Windows does not seem to like quotes around the command
-	if self.platform.OS == "windows" {
+	// cmd.exe does not seem to like quotes around the command
+	if self.isCmdShell() {
 		return strings.NewReplacer(
 			"^", "^^",
 			"&", "^&",
@@ -81,7 +85,7 @@ func (self *CmdObjBuilder) CloneWithNewRunner(decorate func(ICmdObjRunner) ICmdO
 
 func (self *CmdObjBuilder) Quote(message string) string {
 	var quote string
-	if self.platform.OS == "windows" {
+	if self.isCmdShell() {
 		quote = `\"`
 		message = strings.NewReplacer(
 			`"`, `"'"'"`,

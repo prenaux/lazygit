@@ -1,6 +1,8 @@
 package oscommands
 
 import (
+	"os"
+	"strings"
 	"testing"
 
 	"github.com/go-errors/errors"
@@ -72,4 +74,33 @@ func TestOSCommandOpenFileWindows(t *testing.T) {
 
 		s.test(oSCmd.OpenFile(s.filename))
 	}
+}
+
+func TestGetPlatformRespectsShellEnv(t *testing.T) {
+	shell := os.Getenv("SHELL")
+	if shell == "" {
+		t.Skip("SHELL env var not set, not running in Git Bash / MSYS2")
+	}
+
+	platform := GetPlatform()
+
+	assert.Equal(t, "windows", platform.OS)
+	assert.Equal(t, "-c", platform.ShellArg)
+	// Shell should NOT be cmd when SHELL is set
+	assert.NotEqual(t, "cmd", platform.Shell)
+	// Shell should contain the basename from SHELL (e.g. "bash")
+	assert.True(t, strings.Contains(platform.Shell, "bash"),
+		"expected shell to contain 'bash', got: %s", platform.Shell)
+}
+
+func TestGetPlatformFallsBackToCmd(t *testing.T) {
+	originalShell := os.Getenv("SHELL")
+	os.Unsetenv("SHELL")
+	defer os.Setenv("SHELL", originalShell)
+
+	platform := GetPlatform()
+
+	assert.Equal(t, "windows", platform.OS)
+	assert.Equal(t, "cmd", platform.Shell)
+	assert.Equal(t, "/c", platform.ShellArg)
 }
