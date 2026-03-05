@@ -18,7 +18,14 @@ build_lazygit() {
 
     echo "Building for $GOOS $GOARCH..."
     (set -x ; env GOOS=$GOOS GOARCH=$GOARCH go build -o "$output" -ldflags="-s -w" -tags=osusergo,netgo)
+    echo "Done building for $GOOS $GOARCH..."
 }
+
+# Build for Windows x64
+build_lazygit windows amd64 "bin/nt-x64/lazygit.exe"
+
+# Build for macOS arm64
+build_lazygit darwin arm64 "bin/osx-arm64/lazygit"
 
 # Build for Linux x64
 build_lazygit linux amd64 "bin/lin-x64/lazygit"
@@ -26,9 +33,4 @@ build_lazygit linux amd64 "bin/lin-x64/lazygit"
 # Build for macOS x64
 build_lazygit darwin amd64 "bin/osx-x64/lazygit"
 
-# Build for macOS arm64
-build_lazygit darwin arm64 "bin/osx-arm64/lazygit"
-
-# Build for Windows x64
-build_lazygit windows amd64 "bin/nt-x64/lazygit.exe"
-
+echo "Done building all lazygit."
