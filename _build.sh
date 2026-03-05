@@ -6,6 +6,10 @@
 #   ./_build.sh
 #
 
+BUILD_COMMIT=$(git rev-parse HEAD)
+BUILD_DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+BUILD_SOURCE="prenaux/lazygit"
+
 if [ -d "./bin" ]; then
   echo "Removing previous bin build dir..."
   (set -x ; rm -Rf ./bin)
@@ -16,8 +20,13 @@ build_lazygit() {
     local GOARCH=$2
     local output=$3
 
+    local LDFLAGS="-s -w"
+    LDFLAGS="${LDFLAGS} -X main.commit=${BUILD_COMMIT}"
+    LDFLAGS="${LDFLAGS} -X main.date=${BUILD_DATE}"
+    LDFLAGS="${LDFLAGS} -X main.buildSource=${BUILD_SOURCE}"
+
     echo "Building for $GOOS $GOARCH..."
-    (set -x ; env GOOS=$GOOS GOARCH=$GOARCH go build -o "$output" -ldflags="-s -w" -tags=osusergo,netgo)
+    (set -x ; env GOOS=$GOOS GOARCH=$GOARCH go build -o "$output" -ldflags="${LDFLAGS}" -tags=osusergo,netgo)
     echo "Done building for $GOOS $GOARCH..."
 }
 
