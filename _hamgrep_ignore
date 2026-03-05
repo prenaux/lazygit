@@ -1,0 +1,12 @@
+# General stuff
+**/.codex/*.log
+**/.codex/.sandbox
+**/.codex/**/*.log
+**/.codex/**/*.jsonl
+**/.codex/tmp/**
+**/.git/**
+**/.svn/**
+**/_ham/**
+
+# Golang stuff
+**/vendor/**

@@ -1,0 +1,84 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(*)",
+      "Write(*)",
+      "Edit(*)",
+      "Search(*)",
+      "Glob(*)",
+      "Grep(*)",
+      "Update",
+      "WebSearch",
+      "WebFetch",
+      "Bash(grep *)",
+      "Bash(grep:*)",
+      "Bash(rg *)",
+      "Bash(rg:*)",
+      "Bash(ls *)",
+      "Bash(ls:*)",
+      "Bash(find *)",
+      "Bash(find:*)",
+      "Bash(cat *)",
+      "Bash(cat:*)",
+      "Bash(head *)",
+      "Bash(head:*)",
+      "Bash(tail *)",
+      "Bash(tail:*)",
+      "Bash(wc *)",
+      "Bash(wc:*)",
+      "Bash(sed -i *)",
+      "Bash(sed -i:*)",
+      "Bash(cygpath *)",
+      "Bash(cygpath:*)",
+      "Bash(chmod *)",
+      "Bash(chmod:*)",
+      "Bash(echo *)",
+      "Bash(echo:*)",
+      "Bash(touch *)",
+      "Bash(touch:*)",
+      "Bash(* --version)",
+      "Bash(* --help *)",
+      "Bash(git remote add:*)",
+      "Bash(go vet:*)",
+      "Bash(go fmt:*)",
+      "Bash(go build:*)",
+      "Bash(go test:*)"
+    ],
+    "deny": [
+      "Bash(svn commit *)",
+      "Bash(svn commit:*)",
+      "Bash(svn add *)",
+      "Bash(svn add:*)",
+      "Bash(svn remove *)",
+      "Bash(svn remove:*)",
+      "Bash(git commit *)",
+      "Bash(git commit:*)",
+      "Bash(git add *)",
+      "Bash(git add:*)",
+      "Bash(git push *)",
+      "Bash(git push:*)",
+      "Bash(git restore *)",
+      "Bash(git restore:*)",
+      "Read(**/.env)",
+      "Read(**/.env.*)",
+      "EnterPlanMode"
+    ],
+    "ask": []
+  },
+  "env": {
+    "CLAUDE_CODE_DISABLE_AUTO_MEMORY": "1"
+  },
+  "hooks": {
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell.exe -c \"(New-Object System.Media.SoundPlayer 'C:\\Windows\\Media\\tada.wav').PlaySync()\""
+          }
+        ]
+      }
+    ]
+  }
+}
